@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day1", "day1\day1.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day2", "day2\day2.csproj", "{84CCBE84-36A0-4646-950C-A398908039C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day3", "Day3\day3.csproj", "{77FCC2C0-23D3-4F8F-9845-B22CDFDBB408}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "day3", "day3\day3.csproj", "{77FCC2C0-23D3-4F8F-9845-B22CDFDBB408}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
