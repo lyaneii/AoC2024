@@ -2,7 +2,7 @@
 ### Solutions
 | 🎄                                                                   | 🎄                                                                   | 🎄                                                                   | 🎄  | 🎄  | 🎄  | 🎄  |
 |----------------------------------------------------------------------|----------------------------------------------------------------------|----------------------------------------------------------------------|-----|-----|-----|-----|
-| [#1](https://github.com/lyaneii/AoC2024/blob/master/day1/Program.cs) | [#2](https://github.com/lyaneii/AoC2024/blob/master/day2/Program.cs) | [#3](https://github.com/lyaneii/AoC2024/blob/master/day3/Program.cs) | #4  | #5  | #6  | #7  |
+| [#1](https://github.com/lyaneii/AoC2024/blob/master/day1/Program.cs) | [#2](https://github.com/lyaneii/AoC2024/blob/master/day2/Program.cs) | [#3](https://github.com/lyaneii/AoC2024/blob/master/day3/Program.cs) | [#4](https://github.com/lyaneii/AoC2024/blob/master/day4/Program.cs)  | #5  | #6  | #7  |
 | #8                                                                   | #9                                                                   | #10                                                                  | #11 | #12 | #13 | #14 |
 | #15                                                                  | #16                                                                  | #17                                                                  | #18 | #19 | #20 | #21 |
 | #22                                                                  | #23                                                                  | #24                                                                  | #25 | x   | x   | x   |
