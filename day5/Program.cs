@@ -7,7 +7,7 @@ namespace day5
 		public List<int> First;
 		public List<int> Second;
 	};
-	
+
 	public static class Program
 	{
 		private static int PageAdheresOrderRules(OrderRules orderRules, List<int> pageUpdates, int current)
@@ -25,9 +25,10 @@ namespace day5
 					}
 				}
 			}
+
 			return 0;
 		}
-		
+
 		private static int UpdateIsInCorrectOrder(OrderRules orderRules, List<int> pageUpdates)
 		{
 			for (int i = 0; i < pageUpdates.Count; i++)
@@ -35,9 +36,10 @@ namespace day5
 				if (PageAdheresOrderRules(orderRules, pageUpdates, i) != 0)
 					return -1;
 			}
+
 			return pageUpdates[pageUpdates.Count / 2];
 		}
-		
+
 		private static void PartOne(string[] input)
 		{
 			long total = 0;
@@ -54,7 +56,8 @@ namespace day5
 				else if (pageUpdates)
 				{
 					var update = new List<int>();
-					foreach (var element in line.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+					foreach (var element in line.Split(',',
+						         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
 						update.Add(Convert.ToInt32(element));
 					updateList.Add(update);
 				}
@@ -68,7 +71,7 @@ namespace day5
 							orderRules.First.Add(Convert.ToInt32(element));
 						else
 							orderRules.Second.Add(Convert.ToInt32(element));
-						
+
 						count++;
 					}
 				}
@@ -77,11 +80,11 @@ namespace day5
 			foreach (var update in updateList)
 			{
 				var middlePage = UpdateIsInCorrectOrder(orderRules, update);
-				
+
 				if (middlePage != -1)
 					total += middlePage;
 			}
-			
+
 			Console.WriteLine(total);
 		}
 
@@ -98,7 +101,7 @@ namespace day5
 				}
 			}
 		}
-		
+
 		private static void PartTwo(string[] input)
 		{
 			long total = 0;
@@ -115,7 +118,8 @@ namespace day5
 				else if (pageUpdates)
 				{
 					var update = new List<int>();
-					foreach (var element in line.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+					foreach (var element in line.Split(',',
+						         StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
 						update.Add(Convert.ToInt32(element));
 					updateList.Add(update);
 				}
@@ -145,10 +149,11 @@ namespace day5
 					SortUpdate(orderRules, update);
 					middlePage = UpdateIsInCorrectOrder(orderRules, update);
 				}
+
 				if (sortPage)
 					total += update[update.Count / 2];
 			}
-			
+
 			Console.WriteLine(total);
 		}
 

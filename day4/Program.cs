@@ -9,7 +9,7 @@ namespace day4
 		{
 			int count = 0;
 			var searchPosition = s.IndexOf(occurence);
-			
+
 			while (searchPosition >= 0)
 			{
 				count++;
@@ -62,13 +62,14 @@ namespace day4
 					}
 				}
 			}
+
 			return count;
 		}
 
 		private static int VerticalOccurence(string[] input, string occurence, int lineWidth, int verticalPosition)
 		{
 			int count = 0;
-			
+
 			if (input.Length - verticalPosition < occurence.Length)
 				return 0;
 			for (int i = 0; i < lineWidth; i++)
@@ -89,9 +90,10 @@ namespace day4
 						count++;
 				}
 			}
+
 			return count;
 		}
-		
+
 		private static void PartOne(string[] input)
 		{
 			long total = 0;
@@ -122,7 +124,8 @@ namespace day4
 				bool found = true;
 				for (int j = 0; j < occurence.Length; j++)
 				{
-					if (input[verticalPosition - occurence.Length / 2 + j][horizontalPosition - occurence.Length / 2 + j] !=
+					if (input[verticalPosition - occurence.Length / 2 + j][
+						    horizontalPosition - occurence.Length / 2 + j] !=
 					    occurence[j])
 					{
 						found = false;
@@ -136,7 +139,8 @@ namespace day4
 				found = true;
 				for (int j = 0; j < occurence.Length; j++)
 				{
-					if (input[verticalPosition - occurence.Length / 2 + j][horizontalPosition + occurence.Length / 2 - j] !=
+					if (input[verticalPosition - occurence.Length / 2 + j][
+						    horizontalPosition + occurence.Length / 2 - j] !=
 					    occurence[j])
 					{
 						found = false;
@@ -157,7 +161,7 @@ namespace day4
 			string reverse = new string(occurence.Reverse().ToArray());
 
 			if (input.Length - verticalPosition <= occurence.Length / 2
-				|| verticalPosition < occurence.Length / 2)
+			    || verticalPosition < occurence.Length / 2)
 				return 0;
 
 			for (int horizontalPosition = occurence.Length / 2;
@@ -168,7 +172,7 @@ namespace day4
 				    DiagonalCenterOccurence(input, reverse, lineWidth, verticalPosition, horizontalPosition) == 2)
 					count++;
 			}
-			
+
 			return count;
 		}
 
@@ -181,6 +185,7 @@ namespace day4
 			{
 				total += CrossOccurence(input, "MAS", lineWidth, verticalPosition);
 			}
+
 			Console.WriteLine(total);
 		}
 

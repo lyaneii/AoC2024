@@ -20,16 +20,17 @@ namespace day2
 					return false;
 				}
 			}
+
 			return true;
 		}
-		
+
 		private static bool SafetyCheckDampener(List<int> list, int tolerateLevel)
 		{
 			var toleratedList = new List<int>(list);
 			toleratedList.RemoveAt(tolerateLevel);
 			return SafetyCheck(toleratedList);
 		}
-		
+
 		private static bool SafetyCheckPartTwo(List<int> list)
 		{
 			if (list.Count < 2)
@@ -37,9 +38,9 @@ namespace day2
 
 			if (SafetyCheckDampener(list, 0))
 				return true;
-			var	decrease	= list[1] - list[0] < 0 ? true : false;
+			var decrease = list[1] - list[0] < 0 ? true : false;
 			bool safe = true;
-				
+
 			for (int i = 0, j = 1; j < list.Count; i++, j++)
 			{
 				if (Math.Abs(list[j] - list[i]) > 3
@@ -57,49 +58,53 @@ namespace day2
 
 			return safe;
 		}
-		
+
 		private static void PartOne(string[] input)
 		{
-			long	total		= 0;
+			long total = 0;
 
 			foreach (var line in input)
 			{
-				var list			= new List<int>();
-				var report	= line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-				
+				var list = new List<int>();
+				var report = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
 				foreach (var level in report)
 				{
 					list.Add(Convert.ToInt32(level));
 				}
+
 				if (SafetyCheck(list))
 					total++;
 			}
+
 			Console.WriteLine(total);
 		}
-    	
+
 		private static void PartTwo(string[] input)
 		{
-			long	total		= 0;
-			
+			long total = 0;
+
 			foreach (var line in input)
 			{
-				var list			= new List<int>();
-				var report	= line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-				
+				var list = new List<int>();
+				var report = line.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
 				foreach (var level in report)
 				{
 					list.Add(Convert.ToInt32(level));
 				}
+
 				if (SafetyCheckPartTwo(list))
 					total++;
 			}
+
 			Console.WriteLine(total);
 		}
-    	
+
 		public static void Main(string[] args)
 		{
 			var lines = File.ReadAllLines("../../../input.txt");
-			
+
 
 			Console.Write("Part One: ");
 			PartOne(lines);
@@ -107,5 +112,4 @@ namespace day2
 			PartTwo(lines);
 		}
 	}
-
 }

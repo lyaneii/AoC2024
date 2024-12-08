@@ -15,16 +15,18 @@ namespace day3
 
 			foreach (Match match in matches)
 			{
-				var pair = match.Groups[0].Value.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+				var pair = match.Groups[0].Value.Split(',',
+					StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 				total += Convert.ToInt64(pair[0]) * Convert.ToInt64(pair[1]);
 			}
+
 			Console.WriteLine(total);
 		}
 
 		private static void PartTwo(string input)
 		{
 			long total = 0;
-			
+
 			const string pattern = @"do\(\)|(?<=mul\()(\d+,\d+)(?=\))|don't\(\)";
 
 			MatchCollection matches = Regex.Matches(input, pattern);
@@ -38,10 +40,12 @@ namespace day3
 					doMul = false;
 				else if (doMul)
 				{
-					var pair = match.Groups[0].Value.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+					var pair = match.Groups[0].Value.Split(',',
+						StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
 					total += Convert.ToInt64(pair[0]) * Convert.ToInt64(pair[1]);
 				}
 			}
+
 			Console.WriteLine(total);
 		}
 

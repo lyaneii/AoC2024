@@ -19,10 +19,11 @@ namespace day8
 					else
 						Console.Write('.');
 				}
+
 				Console.WriteLine();
 			}
 		}
-		
+
 		private static Dictionary<char, List<(int, int)>> ParseAntennas(string[] input)
 		{
 			var antennas = new Dictionary<char, List<(int, int)>>();
@@ -37,6 +38,7 @@ namespace day8
 						list = new List<(int, int)>();
 						antennas[input[y][x]] = list;
 					}
+
 					list.Add((y, x));
 				}
 			}
@@ -45,7 +47,7 @@ namespace day8
 		}
 
 		private static void PlaceAntinodes(
-			List<(int, int)> antennas, 
+			List<(int, int)> antennas,
 			List<(int, int)> antinodes,
 			(int, int) size)
 		{
@@ -66,16 +68,16 @@ namespace day8
 
 					if (t2.Item1 >= 0 && t2.Item1 < size.Item1 &&
 					    t2.Item2 >= 0 && t2.Item2 < size.Item2 &&
-						!antinodes.Contains(t2))
+					    !antinodes.Contains(t2))
 					{
 						antinodes.Add(t2);
 					}
 				}
 			}
 		}
-		
+
 		private static void PlaceHarmonicAntinodes(
-			List<(int, int)> antennas, 
+			List<(int, int)> antennas,
 			List<(int, int)> antinodes,
 			(int, int) size)
 		{
@@ -87,12 +89,12 @@ namespace day8
 						antinodes.Add(antennas[i]);
 					if (!antinodes.Contains(antennas[j]))
 						antinodes.Add(antennas[j]);
-					
+
 					var diff = (antennas[j].Item1 - antennas[i].Item1, antennas[j].Item2 - antennas[i].Item2);
 					var t1 = (antennas[i].Item1 - diff.Item1, antennas[i].Item2 - diff.Item2);
 					var t2 = (antennas[j].Item1 + diff.Item1, antennas[j].Item2 + diff.Item2);
 
-					while (t1.Item1 >= 0 && t1.Item1 < size.Item1 && 
+					while (t1.Item1 >= 0 && t1.Item1 < size.Item1 &&
 					       t1.Item2 >= 0 && t1.Item2 < size.Item2)
 					{
 						if (!antinodes.Contains(t1))
@@ -100,7 +102,7 @@ namespace day8
 						t1 = (t1.Item1 - diff.Item1, t1.Item2 - diff.Item2);
 					}
 
-					while (t2.Item1 >= 0 && t2.Item1 < size.Item1 && 
+					while (t2.Item1 >= 0 && t2.Item1 < size.Item1 &&
 					       t2.Item2 >= 0 && t2.Item2 < size.Item2)
 					{
 						if (!antinodes.Contains(t2))
@@ -110,12 +112,12 @@ namespace day8
 				}
 			}
 		}
-		
+
 		private static void PartOne(string[] input)
 		{
 			var antennaDict = ParseAntennas(input);
 			var antinodes = new List<(int, int)>();
-			
+
 			foreach (var antennas in antennaDict.Values)
 				PlaceAntinodes(antennas, antinodes, (input.First().Length, input.Length));
 			Console.WriteLine(antinodes.Count);
@@ -134,7 +136,7 @@ namespace day8
 		public static void Main(string[] args)
 		{
 			var lines = File.ReadAllLines("../../../input.txt");
-			
+
 			Console.Write("Part One: ");
 			PartOne(lines);
 			Console.Write("Part Two: ");
