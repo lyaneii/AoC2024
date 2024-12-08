@@ -128,15 +128,6 @@ namespace day8
 
 			foreach (var antennas in antennaDict.Values)
 				PlaceHarmonicAntinodes(antennas, antinodes, (input.First().Length, input.Length));
-
-			foreach (var antennas in antennaDict.Values)
-			{
-				foreach (var antenna in antennas)
-				{
-					if (!antinodes.Contains(antenna))
-						antinodes.Add(antenna);
-				}
-			}
 			Console.WriteLine(antinodes.Count);
 		}
 
