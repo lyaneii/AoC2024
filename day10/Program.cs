@@ -91,7 +91,7 @@ namespace day10
 
             foreach (var coord in dict[0])
             {
-                var visited = new HashSet<(int, (int, int))> {(0, coord)};
+                var visited = new HashSet<(int, (int, int))>();
                 ContinueTrailUp(visited, 0, coord, dict);
                 // PrintTrail(visited, (input[0].Length, input.Length));
                 total += visited.Count(visit => visit.Item1 == 9);
@@ -106,7 +106,7 @@ namespace day10
 
             foreach (var coord in dict[9])
             {
-                var visited = new List<(int height, (int, int) coord)> {(9, coord)};
+                var visited = new List<(int height, (int, int) coord)>();
                 ContinueTrailDown(visited, 9, coord, dict);
                 // PrintTrail(visited, (input[0].Length, input.Length));
                 total += visited.Count(visit => visit.Item1 == 0);
