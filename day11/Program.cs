@@ -22,8 +22,8 @@ namespace day11
         {
             if (_cache.ContainsKey((stone, blinksLeft)))
                 return _cache[(stone, blinksLeft)];
-            long count = 0;
             
+            long count;
             if (blinksLeft == 0)
                 count = 1;
             else if (stone == 0)
