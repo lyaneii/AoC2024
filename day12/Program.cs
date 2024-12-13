@@ -8,7 +8,34 @@ namespace day12
 {
     public static class Program
     {
-        
+        private enum Direction {
+            Start = -1,
+            Up,
+            Left,
+            Right,
+            Down,
+        };
+
+        private static int CountSides(List<(int x, int y)> side, Direction dir)
+        {
+            var total = 0;
+            List<(int x, int y)> ordered;
+
+            if (dir == Direction.Up || dir == Direction.Down)
+                ordered = side.OrderBy(s => s.y).ThenBy(s => s.x).ToList();
+            else
+                ordered = side.OrderBy(s => s.x).ThenBy(s => s.y).ToList();
+            
+            (int x, int y) prev = (-10, -10);
+            foreach (var coord in ordered)
+            {
+                if (Math.Abs(coord.x - prev.x) + Math.Abs(coord.y - prev.y) > 1)
+                    total++;
+                prev = coord;
+            }
+
+            return total;
+        }
         
         private static void CurrentRegionAndPerimeter(char type, (int x, int y) current, Dictionary<(int, int), char> grid,
             HashSet<(int, int)> visited, HashSet<(int, int)> region, ref long perimeter)
@@ -19,6 +46,7 @@ namespace day12
                     perimeter++;
                 return;
             }
+            
             if (!grid.ContainsKey(current) ||
                 grid[current] != type)
             {
@@ -35,66 +63,88 @@ namespace day12
         }
         
         private static void CurrentRegionAndSide(char type, (int x, int y) current, Dictionary<(int, int), char> grid,
-            HashSet<(int, int)> visited, HashSet<(int, int)> region, List<Dictionary<int, int>> sides)
+            HashSet<(int, int)> visited, HashSet<(int, int)> region, List<List<(int, int)>> sides, Direction dir)
         {
             if (visited.Contains(current))
             {
-                if (grid[current] != type);
-                
+                if (grid[current] != type)
+                {
+                    if (dir == Direction.Up || dir == Direction.Down)
+                        sides[(int)dir].Add(current);
+                    else
+                        sides[(int)dir].Add(current);
+                }
                 return;
             }
+            
             if (!grid.ContainsKey(current) ||
                 grid[current] != type)
             {
+                if (dir == Direction.Up || dir == Direction.Down)
+                    sides[(int)dir].Add(current);
+                else
+                    sides[(int)dir].Add(current);
                 return;
             }
 
             visited.Add(current);
             region.Add(current);
-            CurrentRegionAndSide(type, (current.x, current.y - 1), grid, visited, region, sides); // up
-            CurrentRegionAndSide(type, (current.x - 1, current.y), grid, visited, region, sides); // left
-            CurrentRegionAndSide(type, (current.x + 1, current.y), grid, visited, region, sides); // right
-            CurrentRegionAndSide(type, (current.x, current.y + 1), grid, visited, region, sides); // down
+            CurrentRegionAndSide(type, (current.x, current.y - 1), grid, visited, region, sides, Direction.Up); // up
+            CurrentRegionAndSide(type, (current.x - 1, current.y), grid, visited, region, sides, Direction.Left); // left
+            CurrentRegionAndSide(type, (current.x + 1, current.y), grid, visited, region, sides, Direction.Right); // right
+            CurrentRegionAndSide(type, (current.x, current.y + 1), grid, visited, region, sides, Direction.Down); // down
         }
         
-        private static HashSet<HashSet<(int, int)>> FenceRegionsPerimeter(Dictionary<(int, int), char> grid, ref long total)
+        private static long FenceRegionsPerimeter(Dictionary<(int, int), char> grid)
         {
-            HashSet<HashSet<(int, int)>> regions = new();
+            long total = 0;
             HashSet<(int, int)> visited = new();
 
             foreach (var (coord, type) in grid)
             {
                 if (visited.Contains(coord))
                     continue;
+                
                 HashSet<(int, int)> region = new();
                 long perimeter = 0;
+                
                 CurrentRegionAndPerimeter(type, coord, grid, visited, region, ref perimeter);
-                if (region.Any())
-                    regions.Add(region);
+
                 total += region.Count * perimeter;
             }
 
-            return regions;
+            return total;
         }
         
-        private static HashSet<HashSet<(int, int)>> FenceRegionsSides(Dictionary<(int, int), char> grid, ref long total)
+        private static long FenceRegionsSides(Dictionary<(int, int), char> grid)
         {
-            HashSet<HashSet<(int, int)>> regions = new();
+            long total = 0;
             HashSet<(int, int)> visited = new();
 
             foreach (var (coord, type) in grid)
             {
                 if (visited.Contains(coord))
                     continue;
+                
                 HashSet<(int, int)> region = new();
-                List<Dictionary<int, int>> sides = new();
-                CurrentRegionAndSide(type, coord, grid, visited, region, sides);
-                if (region.Any())
-                    regions.Add(region);
-                total += region.Count;
+                List<List<(int, int)>> sides = new()
+                {
+                    new List<(int, int)>(), // up
+                    new List<(int, int)>(), // left
+                    new List<(int, int)>(), // right
+                    new List<(int, int)>(), // down
+                };
+                
+                CurrentRegionAndSide(type, coord, grid, visited, region, sides, Direction.Start);
+                
+                var numSides = 0;
+                foreach (var (side, i) in sides.Select((side, i) => (side, i)))
+                    numSides += CountSides(side, (Direction)i);
+
+                total += region.Count * numSides;
             }
 
-            return regions;
+            return total;
         }
 
         private static Dictionary<(int, int), char> GridToDict(string[] input)
@@ -129,13 +179,9 @@ namespace day12
         {
             long total = 0;
             var dict = GridToDict(input);
-            var regions = FenceRegions(dict, ref total);
-
             
-            // foreach (var region in regions)
-            // {
-            //     PrintRegion(region, (input[0].Length, input.Length));
-            // }
+            total = FenceRegionsPerimeter(dict);
+            
             Console.WriteLine(total);
         }
 
@@ -143,7 +189,8 @@ namespace day12
         {
             long total = 0;
             var dict = GridToDict(input);
-            var regions = FenceRegions(dict, ref total);
+
+            total = FenceRegionsSides(dict);
 
             Console.WriteLine(total);
         }
