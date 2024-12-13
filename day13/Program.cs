@@ -26,32 +26,18 @@ namespace day13
             return (long.Parse(x), long.Parse(y));
         }
 
-        // private static List<(int, int)> GCF(int n)
-        // {
-        //     List<(int, int)> gcf = new();
-        //     var multiplicant = 1;
-        //
-        //     while (multiplicant < n)
-        //     {
-        //         var res = n / multiplicant;
-        //         if (res * multiplicant == n)
-        //             gcf.Add((multiplicant, res));
-        //         multiplicant++;
-        //     }
-        //     return gcf;
-        // }
-
         private static Dictionary<(int, int), int> CalculatePresses((int x, int y) a, (int x, int y) b, (int x, int y) prize)
         {
-            List<(int x, int y)> resA = Enumerable.Range(1, 100).Select(count => (count * a.x, count * a.y)).ToList();
-            List<(int x, int y)> resB = Enumerable.Range(1, 100).Select(count => (count * b.x, count * b.y)).ToList();
+            List<(int x, int y)> resA = Enumerable
+                .Range(1, 100)
+                .Select(count => (count * a.x, count * a.y))
+                .ToList();
+            List<(int x, int y)> resB = Enumerable
+                .Range(1, 100)
+                .Select(count => (count * b.x, count * b.y))
+                .ToList();
             Dictionary<(int x, int y), int> dict = new();
 
-            // Console.WriteLine();
-            // Console.WriteLine("a: " + string.Join(", ", a));
-            // Console.WriteLine("b: " + string.Join(", ", b));
-            // Console.WriteLine("prize: " + string.Join(", ", prize));
-            
             int ia = 1;
             foreach (var ra in resA)
             {
@@ -65,44 +51,33 @@ namespace day13
                 ia++;
             }
 
-            foreach (var (key, value) in dict)
-            {
-                Console.WriteLine(string.Join(",", key) + "= {0}", value);
-            }
-
             return dict;
         }
-        
-        private static Dictionary<(long, long), int> CalculatePressesLong((long x, long y) a, (long x, long y) b, (long x, long y) prize)
+
+        private static void Inverse2DMatrix(ref (long x, long y) a, ref (long x, long y) b)
         {
-            Dictionary<(long x, long y), int> dict = new();
+            (long x, long y) tmp = a;
+            a = (b.y, -b.x);
+            b = (-tmp.y, tmp.x);
+        }
+        
+        private static long CalculatePressesLong((long x, long y) a, (long x, long y) b, (long x, long y) prize)
+        {
+            Console.WriteLine();
+            Console.WriteLine("a: " + string.Join(", ", a));
+            Console.WriteLine("b: " + string.Join(", ", b));
+            Console.WriteLine("prize: " + string.Join(", ", prize));
 
-            // Console.WriteLine();
-            // Console.WriteLine("a: " + string.Join(", ", a));
-            // Console.WriteLine("b: " + string.Join(", ", b));
-            // Console.WriteLine("prize: " + string.Join(", ", prize));
-            
-            (long x, long y) res = (a.x + b.x, a.y + b.y);
-            int ia = 1;
-            while (ia < prize.x / a.x)
-            {
-                int ib = 1;
-                while (ib < prize.y / prize.y)
-                {
-                    res = (a.x * ia + b.x * ib, a.y * ia + b.y * ib);
-                    if (res.x == prize.x && res.y == prize.y)
-                        dict.Add((ia, ib), ia * 3 + ib);
-                    ib++;
-                }
-                ia++;
-            }
+            var determinant = a.x * b.y - b.x * a.y;
+            Inverse2DMatrix(ref a, ref b);
+            (double x, double y) inverseA = ((double)a.x / determinant, (double)a.y / determinant);
+            (double x, double y) inverseB = ((double)b.x / determinant, (double)b.y / determinant);
+            (double x, double y) res = (prize.x * inverseA.x + prize.y * inverseA.y, prize.x * inverseB.x + prize.y * inverseB.y);
 
-            foreach (var (key, value) in dict)
-            {
-                Console.WriteLine(string.Join(",", key) + "= {0}", value);
-            }
-
-            return dict;
+            const double epsilon = 0.001;
+            if (Math.Abs(Math.Round(res.x) - res.x) < epsilon && Math.Abs(Math.Round(res.y) - res.y) < epsilon)
+                return (long)(Math.Round(res.x) * 3) + (long)Math.Round(res.y);
+            return 0;
         }
         
         private static void PartOne(string[] input)
@@ -142,15 +117,15 @@ namespace day13
                     .ToList())
                 .ToList();
 
+            const long add = 10000000000000;
             foreach (var clawMachine in clawMachines)
             {
-                var presses = CalculatePressesLong(
+                var value = CalculatePressesLong(
                     clawMachine[(int)Claw.A], 
                     clawMachine[(int)Claw.B], 
-                    (clawMachine[(int)Claw.Prize].x + 10000000000000, clawMachine[(int)Claw.Prize].y + 10000000000000)
+                    (clawMachine[(int)Claw.Prize].x + add, clawMachine[(int)Claw.Prize].y + add)
                 );
-                if (presses.Any())
-                    total += presses.Values.Min();
+                total += value;
             }
             Console.WriteLine(total);
         }
